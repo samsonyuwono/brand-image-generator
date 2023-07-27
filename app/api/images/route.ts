@@ -4,13 +4,31 @@ const apiKey = process.env.BRAND_FOLDER_API_KEY;
 const photoGalleryId = process.env.BRAND_FOLDER_PHOTO_GALLERY_ID;
 const BRAND_FOLDER = 'https://brandfolder.com/api/v4/';
 
-export async function GET(req: NextApiRequest) {
-  // const data = await fetch(`${BRAND_FOLDER}/collections}/`, {
-  const data = { name: 'John Doe', bio: 'Web Developer' };
+export async function POST(req: NextApiRequest) {
+  const headers = new Headers();
+  const body = await req.json()
+  const { page } = body;
 
-  const response = new Response(JSON.stringify(data), {
-    headers: { 'Content-Type': 'application/json'}
-  });
+  headers.append('Authorization', `Bearer ${apiKey}`);
 
-  return response;
+  const options = {
+    method: 'GET',
+    headers: headers,
+    redirect: 'follow'
+  }
+
+  async function fetchBrandFolderAssets() {
+    try {
+      const response = await fetch(`${BRAND_FOLDER}collections/${photoGalleryId}/assets?page=${page || 1}`, options);
+      const result = await response.text();
+
+      return new Response(result, {
+        headers: { 'Content-Type': 'application/json'}
+      });
+    } catch (error) {
+      console.log('Brand Folder error', error);
+    }
+  }
+
+  return fetchBrandFolderAssets();
 }

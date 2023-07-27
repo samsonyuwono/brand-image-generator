@@ -7,7 +7,7 @@ export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit } = useChat()
 
   return (
-    <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
+    <div className="flex flex-col w-full max-w-4xl py-24 mx-auto stretch">
       <PhotoGallery />
 
       {messages.length > 0

@@ -1,20 +1,34 @@
 'use client'
 
 import { useState, useEffect } from "react"
+import Pagination from './pagination';
 
 export default function photoGallery() {
   const [data, setData] = useState(null)
+  const [meta, setMeta] = useState(null)
   const [isLoading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetChData = async () => {
-      const res = await fetch('/api/images');
-      const data = await res.json()
+    const fetchData = async () => {
+      const res = await fetch('/api/images', {
+        method: 'POST',
+        body: JSON.stringify({
+          page: 2,
+        }),
+      });
+
+      const { data, meta } = await res.json()
+
       setData(data)
+      setMeta(meta)
+
+      console.log(data);
+      console.log(meta);
+
       setLoading(false)
     }
 
-    fetChData().catch(console.error);
+    fetchData().catch(console.error);
   }, [])
 
   if (isLoading) return <p>Loading...</p>
@@ -22,8 +36,20 @@ export default function photoGallery() {
 
   return (
     <div>
-      <h1>{data.name}</h1>
-      <p>{data.bio}</p>
+      <h1 className="text-4xl font-bold py-12">Brand Photo Library</h1>
+
+      <div className="grid grid-cols-3 gap-6">
+        {data.map(item => (
+          <div key={item.id}>
+            <img src={item.attributes.thumbnail_url} alt={item.attributes.description} />
+            {/* <p>{item.attributes.description}</p> */}
+          </div>
+        ))}
+        </div>
+
+        <Pagination />
     </div>
   )
 }
+
+

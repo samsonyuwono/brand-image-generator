@@ -10,6 +10,8 @@
     "open-browser": "open http://localhost:3000"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.18",
+    "@material-tailwind/react": "2.0.6",
     "ai": "^2.1.26",
     "next": "13.4.4-canary.11",
     "openai-edge": "^1.1.0",
