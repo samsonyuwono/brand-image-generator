@@ -6,7 +6,7 @@ const BRAND_FOLDER = 'https://brandfolder.com/api/v4/';
 
 export async function POST(req: NextApiRequest) {
   const headers = new Headers();
-  const body = await req.json()
+  const body = await req.json();
   const { page } = body;
 
   headers.append('Authorization', `Bearer ${apiKey}`);
@@ -19,7 +19,7 @@ export async function POST(req: NextApiRequest) {
 
   async function fetchBrandFolderAssets() {
     try {
-      const response = await fetch(`${BRAND_FOLDER}collections/${photoGalleryId}/assets?page=${page || 1}`, options);
+      const response = await fetch(`${BRAND_FOLDER}collections/${photoGalleryId}/assets?page=${page || 1}&per=12`, options);
       const result = await response.text();
 
       return new Response(result, {

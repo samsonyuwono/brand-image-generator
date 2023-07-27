@@ -2,26 +2,25 @@ import React from "react";
 import { Button, IconButton } from '../test'
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
-export function DefaultPagination() {
-  const [active, setActive] = React.useState(1);
+export function DefaultPagination({ index = 1, total = 10, setIndex }) {
 
-  const getItemProps = (index) =>
+  const getItemProps = (i) =>
     ({
-      variant: active === index ? "filled" : "text",
-      color: active === index ? "blue" : "blue-gray",
-      onClick: () => setActive(index),
+      variant: index === i ? "filled" : "text",
+      color: index === i ? "blue" : "blue-gray",
+      onClick: () => setIndex(i),
     } as any);
 
   const next = () => {
-    if (active === 5) return;
+    if (index === total) return;
 
-    setActive(active + 1);
+    setIndex(index + 1);
   };
 
   const prev = () => {
-    if (active === 1) return;
+    if (index === 1) return;
 
-    setActive(active - 1);
+    setIndex(index - 1);
   };
 
   return (
@@ -31,23 +30,23 @@ export function DefaultPagination() {
         color="blue-gray"
         className="flex items-center gap-2"
         onClick={prev}
-        disabled={active === 1}
+        disabled={index === 1}
       >
         <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
       </Button>
       <div className="flex items-center gap-2">
-        <IconButton {...getItemProps(1)}>1</IconButton>
-        <IconButton {...getItemProps(2)}>2</IconButton>
-        <IconButton {...getItemProps(3)}>3</IconButton>
-        <IconButton {...getItemProps(4)}>4</IconButton>
-        <IconButton {...getItemProps(5)}>5</IconButton>
+        {Array.from({ length: total }, (_, i) => (
+          <IconButton key={i} {...getItemProps(i + 1)}>
+            {i + 1}
+          </IconButton>
+        ))}
       </div>
       <Button
         variant="text"
         color="blue-gray"
         className="flex items-center gap-2"
         onClick={next}
-        disabled={active === 5}
+        disabled={index === total}
       >
         Next
         <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
