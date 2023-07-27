@@ -7,7 +7,7 @@ const config = new Configuration({
 })
 const openai = new OpenAIApi(config)
 
-export async function POST(req: Request) {
+export async function POST(req: Request, response: Response) {
   // Extract the messages from the body of the request
   const { messages } = await req.json()
 
@@ -16,16 +16,15 @@ export async function POST(req: Request) {
     role: message.role,
     content: message.content
   }))
-
+  
   // Make the API call to DALL-E
-  const response = await openai.createImage({
+  const res = await openai.createImage({
     prompt: conversation[0].content,
     n: 1, // sets the numberof images to generate
     size: "1024x1024",
   })
 
-  // Get the generated image URL from the response
-  const imageUrl = response.data.data[0].url
-
-  return imageUrl
+  return new Response(JSON.stringify({ imageUrl: res.data.data[0].url }), {
+    headers: { 'Content-Type': 'application/json'}
+  });
 }
