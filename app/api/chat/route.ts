@@ -1,6 +1,5 @@
 // ./app/api/chat/route.ts
 import { Configuration, OpenAIApi } from 'openai'
-import { OpenAIStream, StreamingTextResponse } from 'ai'
 
 // Create an OpenAI API client (that's edge friendly!)
 const config = new Configuration({
@@ -11,7 +10,7 @@ const openai = new OpenAIApi(config)
 export async function POST(req: Request) {
   // Extract the messages from the body of the request
   const { messages } = await req.json()
-  console.log(messages)
+
   // Create an array to store the conversation messages
   const conversation = messages.map((message: any) => ({
     role: message.role,
