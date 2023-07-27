@@ -1,5 +1,5 @@
 // ./app/api/chat/route.ts
-import { Configuration, OpenAIApi } from 'openai-edge'
+import { Configuration, OpenAIApi } from 'openai'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 
 // Create an OpenAI API client (that's edge friendly!)
@@ -8,25 +8,25 @@ const config = new Configuration({
 })
 const openai = new OpenAIApi(config)
 
-// IMPORTANT! Set the runtime to edge
-export const runtime = 'edge'
-
 export async function POST(req: Request) {
-  // Extract the `prompt` from the body of the request
+  // Extract the messages from the body of the request
   const { messages } = await req.json()
+  console.log(messages)
+  // Create an array to store the conversation messages
+  const conversation = messages.map((message: any) => ({
+    role: message.role,
+    content: message.content
+  }))
 
-  // Ask OpenAI for a streaming chat completion given the prompt
-  const response = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo',
-    stream: true,
-    messages: messages.map((message: any) => ({
-      content: message.content,
-      role: message.role
-    }))
+  // Make the API call to DALL-E
+  const response = await openai.createImage({
+    prompt: conversation[0].content,
+    n: 1, // sets the numberof images to generate
+    size: "1024x1024",
   })
 
-  // Convert the response into a friendly text-stream
-  const stream = OpenAIStream(response)
-  // Respond with the stream
-  return new StreamingTextResponse(stream)
+  // Get the generated image URL from the response
+  const imageUrl = response.data.data[0].url
+
+  return imageUrl
 }
