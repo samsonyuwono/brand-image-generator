@@ -19,7 +19,7 @@ export async function POST(req: NextApiRequest) {
 
   async function fetchBrandFolderAssets() {
     try {
-      const response = await fetch(`${BRAND_FOLDER}collections/${photoGalleryId}/assets?page=${page || 1}&per=12`, options);
+      const response = await fetch(`${BRAND_FOLDER}collections/${photoGalleryId}/assets?page=${page || 1}&per=16`, options);
       const result = await response.text();
 
       return new Response(result, {

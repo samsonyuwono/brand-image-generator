@@ -45,7 +45,6 @@ export default function photoGallery({ images, setImages }) {
   if (isLoading) return <p>Loading...</p>
   if (!data) return <p>No photos found</p>
 
-  console.log(images)
   return (
     <div>
       <h1 className="text-5xl text-center font-bold py-12">Brand Photo Generator</h1>
@@ -65,7 +64,7 @@ export default function photoGallery({ images, setImages }) {
             />
 
             {isActive(item.id) && (
-              <div className="absolute top-0 right-0 p-0 bg-[#4fb06d] rounded-full">
+              <div className="absolute top-0 right-0 p-0.5 bg-[#4fb06d] rounded-full">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-10 h-10">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
