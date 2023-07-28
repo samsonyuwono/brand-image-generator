@@ -2,9 +2,9 @@ import React from "react";
 import { Button, IconButton } from '../test'
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
-export function DefaultPagination({ index = 1, total = 10, setIndex }) {
+export function DefaultPagination({ index = 1, total = 10, setIndex }: any) {
 
-  const getItemProps = (i) =>
+  const getItemProps = (i: number | undefined) =>
     ({
       variant: index === i ? "filled" : "text",
       color: index === i ? "blue" : "blue-gray",

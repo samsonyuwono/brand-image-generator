@@ -1,16 +1,21 @@
 'use client'
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import Pagination from './pagination';
 
-export default function photoGallery({ images, setImages }) {
+type photoGalleryProps = {
+  images: any[],
+  setImages: React.SetStateAction<any>,
+}
+
+export default function photoGallery({ images, setImages }: photoGalleryProps) {
   const [pageIndex, setPageIndex] = useState(1);
-  const [data, setData] = useState(null)
+  const [data, setData] = useState([])
   const [meta, setMeta] = useState(null)
   const [isLoading, setLoading] = useState(true)
 
-  const handleSelect = (id) => {
-    const image = data.find(item => item.id === id)
+  const handleSelect = (id: string) => {
+    const image = data.find((item: any) => item.id === id)
 
     if (images.includes(image) || isActive(id)) {
       setImages(images.filter(item => item.id !== id));
@@ -19,7 +24,7 @@ export default function photoGallery({ images, setImages }) {
     }
   }
 
-  const isActive = (id) => {
+  const isActive = (id: string) => {
     return images.find(item => item.id === id)
   }
 
@@ -50,7 +55,7 @@ export default function photoGallery({ images, setImages }) {
       <h1 className="text-5xl text-center font-bold py-12">Brand Photo Generator</h1>
 
       <div className="grid grid-cols-4 gap-4 min-h-[50%]">
-        {data.map(item => (
+        {data.map((item: any) => (
           <div
             key={item.id}
             className="relative border-solid border-2 border-gray-100 p-4 flex justify-center rounded cursor-pointer hover:outline hover:outline-blue-500 hover:outline-2"

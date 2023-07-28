@@ -4,7 +4,7 @@ const apiKey = process.env.BRAND_FOLDER_API_KEY;
 const photoGalleryId = process.env.BRAND_FOLDER_PHOTO_GALLERY_ID;
 const BRAND_FOLDER = 'https://brandfolder.com/api/v4/';
 
-export async function POST(req: NextApiRequest) {
+export async function POST(req: Request) {
   const headers = new Headers();
   const body = await req.json();
   const { page } = body;
@@ -14,7 +14,7 @@ export async function POST(req: NextApiRequest) {
   const options = {
     method: 'GET',
     headers: headers,
-    redirect: 'follow'
+    redirect: 'follow' as RequestRedirect
   }
 
   async function fetchBrandFolderAssets() {
