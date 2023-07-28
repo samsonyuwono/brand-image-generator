@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 
   async function fetchBrandFolderAssets() {
     try {
-      const response = await fetch(`${BRAND_FOLDER}collections/${photoGalleryId}/assets?page=${page || 1}&per=16`, options);
+      const response = await fetch(`${BRAND_FOLDER}collections/${photoGalleryId}/assets?page=${page || 1}&per=16&fields=cdn_url&search=extension:png`, options);
       const result = await response.text();
 
       return new Response(result, {
