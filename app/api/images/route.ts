@@ -26,7 +26,7 @@ export async function POST(req: NextApiRequest) {
         headers: { 'Content-Type': 'application/json'}
       });
     } catch (error) {
-      console.log('Brand Folder error', error);
+      console.error('Brand Folder error', error);
     }
   }
 
