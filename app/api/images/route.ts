@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextResponse } from 'next/server'
 
 const apiKey = process.env.BRAND_FOLDER_API_KEY;
 const photoGalleryId = process.env.BRAND_FOLDER_PHOTO_GALLERY_ID;
-const BRAND_FOLDER = 'https://brandfolder.com/api/v4/';
+const BRAND_API = 'https://brandfolder.com/api/v4/';
 
 export async function POST(req: Request) {
   const headers = new Headers();
@@ -11,24 +11,32 @@ export async function POST(req: Request) {
 
   headers.append('Authorization', `Bearer ${apiKey}`);
 
-  const options = {
+  const options: RequestInit = {
     method: 'GET',
     headers: headers,
     redirect: 'follow' as RequestRedirect
   }
 
-  async function fetchBrandFolderAssets() {
-    try {
-      const response = await fetch(`${BRAND_FOLDER}collections/${photoGalleryId}/assets?page=${page || 1}&per=16`, options);
-      const result = await response.text();
+  const params = encodeQueryData({
+    page,
+    per: 16,
+    fields: 'cdn_url',
+    // search: 'extension=png',
+  })
+  
+  try {
+    const response = await fetch(`${BRAND_API}collections/${photoGalleryId}/assets?${params}`, options);
+    const result = await response.json();
 
-      return new Response(result, {
-        headers: { 'Content-Type': 'application/json'}
-      });
-    } catch (error) {
-      console.error('Brand Folder error', error);
-    }
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error('Brand Folder error', error);
   }
+}
 
-  return fetchBrandFolderAssets();
+function encodeQueryData(data: Record<string, any>) {
+  const ret = [];
+  for (let d in data)
+    ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+  return ret.join('&');
 }
