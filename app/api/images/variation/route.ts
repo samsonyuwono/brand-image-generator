@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     const { url } = await req.json();
     const bufferArray = await fetch(url).then(r => r.arrayBuffer());
     const file: any = Buffer.from(bufferArray);
-    file.name = "file.png"
+    file.name = "file.png";
 
     const res = await openAI.createImageVariation(
       file,
