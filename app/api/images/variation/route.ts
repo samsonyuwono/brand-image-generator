@@ -23,11 +23,11 @@ export async function POST(req: Request) {
 
     const res = await openAI.createImageVariation(
       file,
-      1, // sets the numberof images to generate
+      4, // sets the numberof images to generate
       "512x512", // Default value = 1024x1024
     )
 
-    return new Response(JSON.stringify({ data: res.data.data[0].url }));
+    return new Response(JSON.stringify({ data: res.data.data }));
 
   } catch (error: Error | any) {
     if (error.response) {

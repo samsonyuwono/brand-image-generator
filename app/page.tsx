@@ -8,17 +8,18 @@ import {
   Dialog,
   DialogHeader,
   DialogBody,
+  Carousel
 } from "@material-tailwind/react";
 
 
 export default function App() {
   const [selectedImages, setSelectedImages] = useState<BrandImageType[]>([]);
-  const [generatedImage, setGeneratedImage] = useState("")
+  const [generatedImages, setGeneratedImages] = useState([])
   const [loading, setLoading] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
 
   const handleOpen = (value: boolean) => {
-    if (!showDialog) setGeneratedImage('')
+    if (!showDialog) setGeneratedImages([])
     setShowDialog(value)
   };
 
@@ -43,7 +44,7 @@ export default function App() {
 
       const data = await resp.json();
 
-      setGeneratedImage(data.data);
+      setGeneratedImages(data.data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -68,9 +69,14 @@ export default function App() {
       <PhotoGallery images={selectedImages} setImages={setSelectedImages} />
 
       <Dialog open={showDialog} handler={handleOpen}>
+        <DialogHeader>Generated Images</DialogHeader>
         <DialogBody>
-          {!generatedImage ? <div className="flex justify-center"><Spinner /></div> : (
-            <img src={generatedImage} className="image" alt="ai thing" />
+          {!generatedImages.length ? <div className="flex justify-center"><Spinner /></div> : (
+            <Carousel className="rounded-sm">
+              {generatedImages.map(({url}, i) => (
+                <img src={url} className="image h-full w-full object-cover" alt={`Generated Image ${i + 1}`} />
+              ))}
+            </Carousel>
           )}
         </DialogBody>
       </Dialog>
